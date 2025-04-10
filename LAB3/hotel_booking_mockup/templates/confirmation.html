@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}Подтверждение бронирования{% endblock %}
+
+{% block content %}
+<div class="container my-5"> {# Добавили контейнер и отступы #}
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <i class="bi bi-check-circle-fill text-success display-1 mb-3"></i>
+            <h1 class="display-5 page-title">Бронирование подтверждено!</h1>
+            <p class="lead mb-4">Спасибо, {{ booking.guest_name }}! Ваше бронирование в отеле "{{ booking.hotel_name }}" успешно создано (симуляция).</p>
+
+            <div class="card shadow-sm mb-4 text-start">
+                 <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Детали вашего бронирования</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>ID Бронирования:</span>
+                        <strong class="text-primary">{{ booking.booking_id }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Отель:</span>
+                        <strong>{{ booking.hotel_name }}</strong>
+                    </li>
+                     <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Имя гостя:</span>
+                        <strong>{{ booking.guest_name }}</strong>
+                    </li>
+                     <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Email гостя:</span>
+                        <strong>{{ booking.guest_email }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Дата заезда:</span>
+                        <strong>{{ booking.check_in }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Дата выезда:</span>
+                        <strong>{{ booking.check_out }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Количество ночей:</span>
+                        <strong>{{ booking.nights }}</strong>
+                    </li>
+                </ul>
+            </div>
+
+            <p class="text-muted">На ваш email <a href="mailto:{{ booking.guest_email }}">{{ booking.guest_email }}</a> было бы отправлено письмо с подтверждением (симуляция).</p>
+
+            <div class="mt-4">
+                 <a href="{{ url_for('index') }}" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-house"></i> На главную
+                </a>
+                <a href="{{ url_for('cancel_booking') }}" class="btn btn-outline-danger">
+                    <i class="bi bi-x-octagon"></i> Отменить бронирование (симуляция)
+                </a>
+            </div>
+        </div>
+    </div>
+</div> {# Конец .container #}
+{% endblock %}
