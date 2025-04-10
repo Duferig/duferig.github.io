@@ -7,4 +7,4 @@ commands = [
 ]
 
 [start]
-command = "python app.py"  # Команда для запуска
+command = "gunicorn --bind :$PORT app:app"
