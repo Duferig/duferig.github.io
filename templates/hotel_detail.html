@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ hotel.name }} - Детали отеля{% endblock %}
+
+{% block content %}
+<div class="container my-5"> {# Добавили контейнер и отступы #}
+    <nav aria-label="breadcrumb mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Главная</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ hotel.name }}</li>
+      </ol>
+    </nav>
+
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <h1 class="display-5 page-title">{{ hotel.name }}</h1>
+            <p class="lead text-muted"><i class="bi bi-geo-alt-fill"></i> {{ hotel.location }}</p>
+            <span class="badge bg-warning text-dark rating-badge fs-5 mb-3"><i class="bi bi-star-fill"></i> {{ hotel.rating }}</span>
+
+            {% if hotel.image_paths %}
+            <div id="hotelImageCarousel" class="carousel slide shadow rounded mb-4" data-bs-ride="carousel">
+                <div class="carousel-inner rounded">
+                    {% for image_path in hotel.image_paths %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <img src="{{ url_for('static', filename=image_path) }}" class="d-block w-100 carousel-image" alt="Фото отеля {{ hotel.name }} {{ loop.index }}">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if hotel.image_paths|length > 1 %} {# Показываем кнопки только если фото больше одного #}
+                <button class="carousel-control-prev" type="button" data-bs-target="#hotelImageCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#hotelImageCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+                {% endif %}
+            </div>
+            {% elif hotel.image_url_path %} {# Если только одно главное фото #}
+                 <img src="{{ url_for('static', filename=hotel.image_url_path) }}" class="img-fluid rounded shadow mb-4" alt="{{ hotel.name }}">
+            {% endif %}
+
+            <h2 class="section-title">Описание</h2>
+            <p>{{ hotel.long_desc }}</p>
+
+            <h2 class="section-title mt-4">Услуги отеля</h2>
+            <ul class="list-unstyled d-flex flex-wrap">
+                {% for service in hotel.services %}
+                    <li class="me-3 mb-2 badge bg-light text-dark p-2 service-tag"><i class="bi bi-check-circle-fill text-success me-1"></i>{{ service }}</li>
+                {% endfor %}
+            </ul>
+
+            <h2 class="section-title mt-4">Типы номеров</h2>
+            <div class="list-group mb-4"> {# Добавили отступ снизу #}
+                {% for room in hotel.rooms %}
+                    <div class="list-group-item list-group-item-action flex-column align-items-start mb-2 rounded shadow-sm">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1 room-title">{{ room.name }}</h5>
+                            <small class="fw-bold price">{{ room.price }}₽ / ночь</small>
+                        </div>
+                        <p class="mb-1 text-muted">{{ room.features }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="col-lg-4">
+            {% set headerHeight = 80 %} {# Примерная высота хедера + небольшой отступ #}
+             <div class="card shadow sticky-top booking-widget" style="top: {{ headerHeight }}px;">
+                <div class="card-body text-center">
+                     <h5 class="card-title mb-3">Забронировать номер</h5>
+                     <p class="price fs-4 mb-3">{{ hotel.price_range }}</p>
+                    <a href="{{ url_for('booking_form', hotel_id=hotel.id) }}" class="btn btn-primary btn-lg w-100">
+                        <i class="bi bi-calendar-check"></i> Перейти к бронированию
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-5"> {# Добавляем отступ сверху для отзывов #}
+                <h3 class="section-title">Отзывы клиентов</h3>
+                 {% if hotel.reviews %}
+                    {% for review in hotel.reviews %}
+                    <div class="card mb-3 shadow-sm review-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="card-subtitle mb-2 text-muted">{{ review.author }}</h6>
+                                <span class="badge bg-warning text-dark rating-badge">
+                                    <i class="bi bi-star-fill"></i> {{ review.rating }}
+                                </span>
+                            </div>
+                            <p class="card-text">{{ review.text }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                 {% else %}
+                    <p>Отзывов пока нет.</p>
+                 {% endif %}
+             </div>
+        </div>
+    </div>
+</div> {# Конец .container #}
+{% endblock %}

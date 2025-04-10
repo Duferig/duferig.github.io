@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}Страница не найдена (404){% endblock %}
+
+{% block content %}
+<div class="container my-5"> {# Добавили контейнер и отступы #}
+    <div class="text-center py-5">
+        <h1 class="display-1 text-danger">404</h1>
+        <h2 class="mb-4">Страница не найдена</h2>
+        <p class="lead mb-4">
+            Извините, страница, которую вы ищете, не существует или была перемещена.
+        </p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+            <i class="bi bi-house-door-fill"></i> Вернуться на главную
+        </a>
+    </div>
+</div> {# Конец .container #}
+{% endblock %}
