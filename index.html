@@ -1,13 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-</head>
-<body>
-    <h1>Welcome to My Website</h1>
-    <p>This is my first website.</p>
-</body>
-</html>
-<link rel="stylesheet" href="styles.css">
+{% extends "layout.html" %}
+
+{% block title %}Главная - Найдите отель своей мечты{% endblock %}
+
+{% block content %}
+
+{# === Hero Section === #}
+<div class="hero-section text-center text-white mb-5 shadow">
+    <div class="hero-overlay"></div> {# Слой для затемнения фона и читаемости текста #}
+    <div class="container hero-content">
+        <h1 class="display-4 fw-bold mb-3 hero-title">Найдите отель своей мечты</h1>
+        <p class="lead mb-4 hero-subtitle">Бронируйте лучшие номера по выгодным ценам в любой точке мира (макет).</p>
+         <a href="#hotel-list" class="btn btn-outline-light btn-lg mt-4 hero-cta-button">Смотреть отели <i class="bi bi-arrow-down"></i></a>
+    </div>
+</div>
+
+{# === Список отелей === #}
+<div id="hotel-list" class="container mb-5"> {# Добавили отступ снизу mb-5 #}
+    <h2 class="mb-4 display-5 page-title text-center section-heading">Популярные направления</h2>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for hotel in hotels %}
+        <div class="col">
+            <div class="card h-100 shadow-sm hotel-card">
+                <img src="{{ url_for('static', filename=hotel.image_url_path) }}" class="card-img-top" alt="{{ hotel.name }}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ hotel.name }}</h5>
+                    <p class="card-text text-muted"><i class="bi bi-geo-alt-fill"></i> {{ hotel.location }}</p>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-warning text-dark rating-badge"><i class="bi bi-star-fill"></i> {{ hotel.rating }}</span>
+                        <span class="fw-bold price">{{ hotel.price_range }}</span>
+                    </div>
+                    <p class="card-text description flex-grow-1">{{ hotel.short_desc }}</p>
+                    <a href="{{ url_for('hotel_detail', hotel_id=hotel.id) }}" class="btn btn-primary mt-auto">Подробнее <i class="bi bi-arrow-right-short"></i></a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col">
+            <p>К сожалению, доступных отелей сейчас нет.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{# Плавный скролл для кнопки в Hero Section #}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollButton = document.querySelector('a.hero-cta-button[href="#hotel-list"]');
+    if (scrollButton) {
+        scrollButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetElement = document.getElementById('hotel-list');
+            if (targetElement) {
+                 // Пытаемся получить высоту хедера, если он есть и sticky
+                 const header = document.querySelector('header.sticky-top');
+                 const headerHeight = header ? header.offsetHeight : 70; // Запасной вариант 70px
+                 
+                 window.scrollTo({
+                    top: targetElement.offsetTop - headerHeight, // Учитываем высоту хедера
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
