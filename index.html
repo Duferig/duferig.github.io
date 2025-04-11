@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Слот-машина (1 линия)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="slot-machine">
+        <h1>Слот для Бригадира Березы</h1>
+
+        <div class="reels">
+            <div class="reel"></div>
+            <div class="reel"></div>
+            <div class="reel"></div>
+        </div>
+
+        <div class="controls">
+            <div class="balance-info">
+                Баланс: <span id="balance">1000</span> ₽
+            </div>
+            <div class="bet-info">
+                Ставка:
+                <input type="number" id="bet-amount" value="1" min="1" step="1"> ₽
+                <button id="spin-button">ВРАЩАТЬ!</button>
+            </div>
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+
+    <audio id="spin-sound" src="sounds/spin.mp3" preload="auto"></audio>
+    <audio id="win-sound" src="sounds/win.mp3" preload="auto"></audio>
+    <audio id="lose-sound" src="sounds/lose.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

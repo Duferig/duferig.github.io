@@ -1,0 +1,225 @@
+/* CSS Переменные */
+:root {
+    --bg-gradient-start: #3a7bd5;
+    --bg-gradient-end: #00d2ff;
+    --machine-bg: rgba(255, 255, 255, 0.95);
+    --reel-bg: #ffffff;
+    --reel-border: #bdc3c7;
+    --button-bg: #e74c3c;
+    --button-hover-bg: #c0392b;
+    --button-disabled-bg: #95a5a6;
+    --win-color: #27ae60;
+    --lose-color: #c0392b;
+    --text-color: #2c3e50;
+    --symbol-size: 50px; /* Размер символа */
+    --symbol-container-height: 80px; /* Высота контейнера одного символа */
+    --win-highlight-bg: rgba(255, 215, 0, 0.5); /* Фон подсветки */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, var(--bg-gradient-start), var(--bg-gradient-end));
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.slot-machine {
+    background-color: var(--machine-bg);
+    padding: 20px 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    max-width: 95%;
+}
+
+h1 {
+    margin-bottom: 25px;
+    color: var(--bg-gradient-start);
+    font-weight: bold;
+}
+
+.reels {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* Отступ от барабанов до контролов */
+    background-color: #e8ecef;
+    border: 5px solid var(--reel-border);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px 5px;
+    position: relative;
+}
+
+/* Стиль .payout-line убран */
+
+.reel {
+    width: calc(var(--symbol-container-height) * 1.2); /* Ширина барабана */
+    height: var(--symbol-container-height); /* Высота = высота ОДНОГО символа */
+    background-color: var(--reel-bg);
+    margin: 0 5px;
+    border: 1px solid #d5dbdb;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    font-size: var(--symbol-size);
+    overflow: hidden; /* Обязательно для эффекта прокрутки */
+    position: relative;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.reel-symbols {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: translateY(0); /* Начальное положение */
+    z-index: 2;
+    /* transition добавляется/убирается в JS для анимации */
+}
+
+.reel-symbols > div {
+    height: var(--symbol-container-height); /* Высота одного элемента = высота видимой части */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border-bottom убран */
+    position: relative;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    z-index: 5;
+}
+
+/* --- Анимация подсветки выигравших символов --- */
+@keyframes highlight-win {
+    0%, 100% { transform: scale(1); background-color: transparent; }
+    50% { transform: scale(1.15); background-color: var(--win-highlight-bg); }
+}
+
+.winning-symbol {
+    animation: highlight-win 0.7s ease-in-out 2; /* Проиграть 2 раза */
+    border-radius: 10px;
+    z-index: 20 !important; /* Поверх всего во время анимации */
+}
+
+/* Стиль .dimmed убран */
+
+/* --- Анимация вспышки сообщения о выигрыше --- */
+@keyframes flash-message {
+    0%, 100% { background-color: var(--win-color); color: white; transform: scale(1); }
+    50% { background-color: transparent; color: var(--win-color); transform: scale(1.05); }
+}
+
+.message.win.flash {
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    animation: flash-message 0.5s linear 2; /* Проиграть 2 раза */
+}
+
+.controls {
+    padding: 0 10px;
+     margin-top: 15px;
+}
+
+.controls button {
+    padding: 12px 25px;
+    font-size: 1.3em;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(to bottom, #f15a48, var(--button-bg));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-left: 10px;
+}
+
+.controls button:hover:not(:disabled) {
+    background: linear-gradient(to bottom, #d64534, var(--button-hover-bg));
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+}
+.controls button:active:not(:disabled) {
+     transform: translateY(0px);
+     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.controls button:disabled {
+    background: var(--button-disabled-bg);
+    cursor: not-allowed;
+    opacity: 0.7;
+    box-shadow: none;
+    transform: none;
+}
+
+.balance-info, .bet-info {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#balance {
+    font-weight: bold;
+    color: var(--win-color);
+    background-color: #f0f0f0;
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+#bet-amount {
+    width: 70px;
+    padding: 8px;
+    text-align: center;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.message {
+    margin-top: 20px;
+    font-weight: bold;
+    min-height: 25px;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+}
+.message.win { color: var(--win-color); }
+.message.lose { color: var(--lose-color); }
+
+
+/* --- Адаптивность --- */
+@media (max-width: 600px) {
+    :root {
+         --symbol-size: 40px;
+         --symbol-container-height: 65px; /* Уменьшаем высоту символа */
+    }
+
+    .slot-machine { padding: 15px; }
+    h1 { font-size: 1.8em; margin-bottom: 15px; }
+    .reels { padding: 5px; margin-bottom: 15px; }
+    .reel { margin: 0 3px; }
+
+    .controls { margin-top: 10px; }
+    .balance-info, .bet-info {
+        font-size: 1em;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    .controls button {
+        padding: 10px 20px;
+        font-size: 1.1em;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    #bet-amount { width: 80px; }
+    .message { font-size: 1em; min-height: 22px; margin-top: 15px; }
+}
