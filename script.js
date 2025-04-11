@@ -210,7 +210,7 @@ function checkWin(finalReels) {
 
     } else {
         // Проигрыш
-        messageDisplay.textContent = 'Мимо!';
+        messageDisplay.textContent = 'Хуй тебе,а выигрыш!';
         messageDisplay.classList.add('lose');
         // playSound(loseSound);
     }
