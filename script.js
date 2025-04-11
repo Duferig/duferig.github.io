@@ -23,32 +23,29 @@ const SYMBOLS = { // Имена для читаемости
     GRAPE: '🍇', BELL: '🔔', STAR: '⭐', SEVEN: '7️⃣'
 };
 
-// ########## ИЗМЕНЕННЫЙ БЛОК ##########
-// Новые ленты барабанов с измененными вероятностями
+// ########## БЛОК С ИЗМЕНЕННЫМИ ЛЕНТАМИ ДЛЯ ЧАСТЫХ КОМБИНАЦИЙ ##########
+// Ленты барабанов для более частого выпадения комбинаций (особенно 🍒)
 const REEL_STRIPS = [
-    [ // Барабан 1 (Больше 🍒, 🍋, 🍊; меньше 🔔, ⭐; нет 7️⃣) - Длина 25
-        SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.CHERRY, SYMBOLS.ORANGE, SYMBOLS.GRAPE,
-        SYMBOLS.LEMON, SYMBOLS.CHERRY, SYMBOLS.BELL, SYMBOLS.LEMON, SYMBOLS.CHERRY,
-        SYMBOLS.ORANGE, SYMBOLS.GRAPE, SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.ORANGE,
-        SYMBOLS.BELL, SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.GRAPE, SYMBOLS.CHERRY,
-        SYMBOLS.ORANGE, SYMBOLS.LEMON, SYMBOLS.BELL, SYMBOLS.CHERRY, SYMBOLS.STAR // Только 1 звезда
+    [ // Барабан 1 (Очень много 🍒, умеренно 🍋, 🍊) - Длина 20
+        SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.CHERRY, SYMBOLS.ORANGE, SYMBOLS.CHERRY,
+        SYMBOLS.GRAPE,  SYMBOLS.LEMON, SYMBOLS.CHERRY, SYMBOLS.BELL,   SYMBOLS.CHERRY,
+        SYMBOLS.LEMON,  SYMBOLS.CHERRY, SYMBOLS.ORANGE, SYMBOLS.CHERRY, SYMBOLS.LEMON,
+        SYMBOLS.GRAPE,  SYMBOLS.CHERRY, SYMBOLS.ORANGE, SYMBOLS.BELL,   SYMBOLS.CHERRY // ⭐ и 7️⃣ убраны с 1-го барабана
     ],
-    [ // Барабан 2 (Сбалансировано, но 7️⃣ редкая) - Длина 25
-        SYMBOLS.LEMON, SYMBOLS.BELL, SYMBOLS.CHERRY, SYMBOLS.GRAPE, SYMBOLS.ORANGE,
-        SYMBOLS.LEMON, SYMBOLS.CHERRY, SYMBOLS.BELL, SYMBOLS.STAR, SYMBOLS.GRAPE,
-        SYMBOLS.ORANGE, SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.GRAPE, SYMBOLS.BELL,
-        SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.ORANGE, SYMBOLS.CHERRY, SYMBOLS.GRAPE,
-        SYMBOLS.LEMON, SYMBOLS.CHERRY, SYMBOLS.ORANGE, SYMBOLS.BELL, SYMBOLS.SEVEN // Только 1 семерка
+    [ // Барабан 2 (Очень много 🍒, есть редкие ⭐ и 7️⃣) - Длина 20
+        SYMBOLS.CHERRY, SYMBOLS.BELL,   SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.CHERRY,
+        SYMBOLS.ORANGE, SYMBOLS.CHERRY, SYMBOLS.GRAPE,  SYMBOLS.LEMON, SYMBOLS.CHERRY,
+        SYMBOLS.STAR,   SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.BELL,  SYMBOLS.CHERRY,
+        SYMBOLS.ORANGE, SYMBOLS.GRAPE,  SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.SEVEN // ⭐ и 7️⃣ очень редкие
     ],
-    [ // Барабан 3 (Больше 🍒, 🍋, 🍊; меньше 🔔, ⭐ редкая, 7️⃣ есть) - Длина 25
-        SYMBOLS.ORANGE, SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.GRAPE, SYMBOLS.CHERRY,
-        SYMBOLS.BELL, SYMBOLS.LEMON, SYMBOLS.ORANGE, SYMBOLS.CHERRY, SYMBOLS.LEMON,
-        SYMBOLS.GRAPE, SYMBOLS.ORANGE, SYMBOLS.CHERRY, SYMBOLS.STAR, SYMBOLS.LEMON,
-        SYMBOLS.BELL, SYMBOLS.CHERRY, SYMBOLS.ORANGE, SYMBOLS.LEMON, SYMBOLS.GRAPE,
-        SYMBOLS.CHERRY, SYMBOLS.ORANGE, SYMBOLS.LEMON, SYMBOLS.CHERRY, SYMBOLS.SEVEN // Только 1 семерка
+    [ // Барабан 3 (Очень много 🍒, есть редкие ⭐ и 7️⃣) - Длина 20
+        SYMBOLS.CHERRY, SYMBOLS.ORANGE, SYMBOLS.CHERRY, SYMBOLS.LEMON, SYMBOLS.GRAPE,
+        SYMBOLS.CHERRY, SYMBOLS.LEMON,  SYMBOLS.BELL,   SYMBOLS.CHERRY, SYMBOLS.ORANGE,
+        SYMBOLS.LEMON,  SYMBOLS.CHERRY, SYMBOLS.GRAPE,  SYMBOLS.CHERRY, SYMBOLS.SEVEN, // ⭐ убрана
+        SYMBOLS.BELL,   SYMBOLS.CHERRY, SYMBOLS.LEMON,  SYMBOLS.ORANGE, SYMBOLS.CHERRY
     ]
 ];
-// #####################################
+// #######################################################################
 
 const REEL_COUNT = 3;
 const SYMBOLS_VISIBLE = 1; // Виден только 1 символ
@@ -144,10 +141,10 @@ async function spinReels() {
         const symbolContainer = reel.querySelector('.reel-symbols');
         const strip = REEL_STRIPS[i];
         const stripLength = strip.length;
-        const randomStopIndex = Math.floor(Math.random() * stripLength); // Индекс символа, который должен остановиться
+        const randomStopIndex = Math.floor(Math.random() * stripLength);
 
         const finalVisibleSymbol = getSymbolsFromStrip(i, randomStopIndex, 1)[0];
-        finalResults[i] = [finalVisibleSymbol]; // Сохраняем как массив из одного элемента
+        finalResults[i] = [finalVisibleSymbol];
 
         const symbolsForAnimation = getSymbolsFromStrip(i, 0, stripLength);
         fillReel(symbolContainer, symbolsForAnimation);
